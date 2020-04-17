@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {getWikiTable, getHeaders, getWorldWideStats, getTableStats, getCountries, getDataForCountry} = require('../controller');
+const {getHeaders, getWorldWideStats, getTableStats, getCountries, getDataForCountry} = require('../controller');
 
 /**
  * @api {get} /corona/ Request WorldWide stats
@@ -19,9 +19,9 @@ const {getWikiTable, getHeaders, getWorldWideStats, getTableStats, getCountries,
  *      }
  */
 router.get('/', (req, res) => {
-    getWikiTable().then(html => {
-        res.json(getWorldWideStats(html));
-    });
+    getWorldWideStats().then(result => {
+        res.json(result);
+    })
 });
 
 /**
@@ -40,9 +40,9 @@ router.get('/', (req, res) => {
  *      ]
  */
 router.get('/headers', (req, res) => {
-    getWikiTable().then(html => {
-        res.json(getHeaders(html));
-    });
+    getHeaders().then(result => {
+        res.json(result[0]);
+    })
 });
 
 /**
@@ -67,9 +67,9 @@ router.get('/headers', (req, res) => {
  *      ]
  */
 router.get('/all', (req, res) => {
-    getWikiTable().then(html => {
-        res.json(getTableStats(html));
-    });
+    getTableStats().then(result => {
+        res.json(result);
+    })
 });
 
 /**
@@ -89,8 +89,8 @@ router.get('/all', (req, res) => {
  *      ]
  */
 router.get('/countries', (req, res) => {
-    getWikiTable().then(html => {
-        res.json(getCountries(html));
+    getCountries().then(result => {
+        res.json(result[0]);
     });
 });
 
@@ -112,9 +112,9 @@ router.get('/countries', (req, res) => {
  *      }
  */
 router.get('/:country', (req, res) => {
-    getWikiTable().then(html => {
-        res.json(getDataForCountry(html, req.params.country));
-    }); 
+    getDataForCountry(req.params.country).then(result => {
+        res.json(result);
+    });
 });
 
 module.exports = router;
